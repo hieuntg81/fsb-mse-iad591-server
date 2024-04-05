@@ -1,14 +1,14 @@
 package main
 
 import (
+	controller "fsb-mse-iad591-server/handler"
 	"github.com/gin-gonic/gin"
-	controller "iad591server/api"
 	"net/http"
 )
 
 func main() {
 	router := gin.Default()
-	api := router.Group("/api")
+	api := router.Group("/handler")
 	{
 		api.GET("/test", func(ctx *gin.Context) {
 			ctx.JSON(200, gin.H{
@@ -24,5 +24,8 @@ func main() {
 		})
 	}
 
-	router.Run(":8080")
+	err := router.Run(":8080")
+	if err != nil {
+		return
+	}
 }
