@@ -11,8 +11,8 @@ func (TemperatureRecord) TableName() string {
 
 type TemperatureRecord struct {
 	gorm.Model
-	ID        uint `gorm:"primaryKey;autoIncrement:false;column:id"`
-	Value     string
+	ID        uint `gorm:"primaryKey;autoIncrement:true;column:id"`
+	Value     float64
 	Unit      string
 	CreatedAt time.Time
 	UpdatedAt time.Time

@@ -11,11 +11,17 @@ func (HumidityRecord) TableName() string {
 
 type HumidityRecord struct {
 	gorm.Model
-	ID        uint `gorm:"primaryKey;autoIncrement:false;column:id"`
-	Value     string
+	ID        uint `gorm:"primaryKey;autoIncrement:true;column:id"`
+	Value     float64
 	Unit      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	UpdatedBy string
 	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+type Payload struct {
+	Value     float64 `json:"value"`
+	Unit      string  `json:"unit"`
+	UpdatedBy string  `json:"updated_by"`
 }
