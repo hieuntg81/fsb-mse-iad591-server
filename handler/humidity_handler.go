@@ -3,8 +3,8 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"fsb-mse-iad591-server/datasource/models"
 	"github.com/gin-gonic/gin"
+	"iad591/datasource/models"
 	"io"
 	"net/http"
 	"time"

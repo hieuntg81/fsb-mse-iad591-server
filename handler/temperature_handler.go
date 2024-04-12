@@ -3,9 +3,9 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	models2 "fsb-mse-iad591-server/datasource/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	models2 "iad591/datasource/models"
 	"io"
 	"net/http"
 	"time"

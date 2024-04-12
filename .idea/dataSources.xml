@@ -8,12 +8,5 @@
       <jdbc-url>jdbc:postgresql://138.2.53.115:5432/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="bizfly | postgres@14.225.29.37" uuid="c9f38c96-87e7-4005-88c5-363a7e06458d">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://14.225.29.37:5432/postgres</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
   </component>
 </project>
