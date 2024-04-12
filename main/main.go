@@ -12,6 +12,7 @@ import (
 	"iad591/datasource/models"
 	controller "iad591/handler"
 	"log"
+	"time"
 )
 
 func main() {
@@ -23,7 +24,20 @@ func main() {
 	}
 
 	h := controller.New(DB)
-	kh := controller.NewKafkaClient(InitKafkaProducer())
+
+	// Create producer
+	kh := controller.NewKafkaClient(InitKafkaProducer(), InitKafkaConsumer(), DB)
+	schedule := cron.New()
+	_, err = schedule.AddFunc("@every 1m", func() {
+		kh.SendLatestConfiguration(DB)
+		//kh.TestSendHumidity(DB)
+		fmt.Println("Sending configuration every minutes")
+	})
+	go schedule.Start()
+
+	// Create consumer
+	kh.UpdateHumidity(DB)
+
 	router := gin.Default()
 	api := router.Group("")
 	{
@@ -37,13 +51,6 @@ func main() {
 		api.POST("/configuration", h.UpdateConfiguration)
 	}
 	err = router.Run(":6666")
-
-	scheduler := cron.New()
-	_, err = scheduler.AddFunc("0 * * * * ?", func() {
-		kh.SendLatestHumidity(DB)
-		fmt.Println("Sending configuration every minutes")
-	})
-	scheduler.Run()
 	if err != nil {
 		return
 	}
@@ -66,6 +73,30 @@ func InitKafkaProducer() sarama.SyncProducer {
 		log.Fatalln("Failed to start Sarama producer:", err)
 	}
 	return producer
+}
+
+func InitKafkaConsumer() sarama.ConsumerGroup {
+	config := sarama.NewConfig()
+	config.Net.SASL.Enable = true
+	config.Net.SASL.User = "bizfly-7-678-admin"
+	config.Net.SASL.Password = "admin1234"
+	config.Net.SASL.Mechanism = sarama.SASLTypeSCRAMSHA512
+	config.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA512} }
+	config.Net.SASL.Handshake = true
+	config.Version = sarama.V2_0_0_0
+	config.Consumer.Offsets.AutoCommit.Enable = true
+	config.Consumer.Offsets.AutoCommit.Interval = 1 * time.Second
+
+	brokers := []string{"cluster001.kas.bfcplatform.vn:9094"}
+	//consumer, err := sarama.NewConsumer(brokers, config)
+	//if err != nil {
+	//	log.Fatalln("Error creating consumer", err)
+	//}
+	consumerGroup, err := sarama.NewConsumerGroup(brokers, "bizfly-7-678-group-1", config)
+	if err != nil {
+		log.Panicf("Error creating consumerGroup group client: %v", err)
+	}
+	return consumerGroup
 }
 
 var (
