@@ -12,11 +12,12 @@ import (
 )
 
 type Handler struct {
-	DB *gorm.DB
+	DB      *gorm.DB
+	handler KafkaHandler
 }
 
-func New(db *gorm.DB) Handler {
-	return Handler{db}
+func New(db *gorm.DB, handler KafkaHandler) Handler {
+	return Handler{db, handler}
 }
 
 func (h Handler) GetTemperatureRecords(ctx *gin.Context) {

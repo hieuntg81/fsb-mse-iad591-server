@@ -31,8 +31,6 @@ func main() {
 		return
 	}
 
-	h := controller.New(DB)
-
 	// Create producer
 	kh := controller.NewKafkaClient(InitKafkaProducer(), InitKafkaConsumer(), DB)
 	schedule := cron.New()
@@ -46,6 +44,7 @@ func main() {
 	// Create consumer
 	go kh.UpdateHumidity(DB)
 
+	h := controller.New(DB, kh)
 	router := gin.Default()
 	router.Use(disableCORS)
 	api := router.Group("")

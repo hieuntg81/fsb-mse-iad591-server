@@ -14,11 +14,10 @@ import (
 type KafkaHandler struct {
 	producer sarama.SyncProducer
 	consumer sarama.ConsumerGroup
-	DB       *gorm.DB
 }
 
 func NewKafkaClient(producer sarama.SyncProducer, consumer sarama.ConsumerGroup, db *gorm.DB) KafkaHandler {
-	return KafkaHandler{producer, consumer, db}
+	return KafkaHandler{producer, consumer}
 }
 
 func (kh KafkaHandler) SendLatestConfiguration(DB *gorm.DB) {
@@ -45,7 +44,7 @@ func (kh KafkaHandler) SendLatestConfiguration(DB *gorm.DB) {
 func (kh KafkaHandler) UpdateHumidity(DB *gorm.DB) {
 	var topic = "bizfly-7-678-humidity"
 	consumer := KafkaConsumerGroupHandler{
-		DB: kh.DB,
+		DB: DB,
 	}
 	ctx := context.Background()
 
