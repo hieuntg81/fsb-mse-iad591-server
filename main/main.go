@@ -36,7 +36,7 @@ func main() {
 	go schedule.Start()
 
 	// Create consumer
-	kh.UpdateHumidity(DB)
+	go kh.UpdateHumidity(DB)
 
 	router := gin.Default()
 	api := router.Group("")
