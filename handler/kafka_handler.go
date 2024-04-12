@@ -55,28 +55,6 @@ func (kh KafkaHandler) UpdateHumidity(DB *gorm.DB) {
 			log.Panicf("Error from consumer: %v", err)
 		}
 	}
-	//partitionList, _ := kh.consumer.Partitions(topic)
-	//for _, partition := range partitionList {
-	//	pc, _ := kh.consumer.ConsumePartition(topic, partition, sarama.OffsetNewest)
-	//	go func(pc sarama.PartitionConsumer) {
-	//		for message := range pc.Messages() {
-	//			log.Printf("Received message from topic:%s partition:%d offset:%d key:%v value:%s", message.Topic, message.Partition, message.Offset, string(message.Key), string(message.Value))
-	//			err := json.Unmarshal(message.Value, &payload)
-	//			if err != nil {
-	//				log.Fatalln("Failed to parse message:", err)
-	//			}
-	//			var record models.HumidityRecord
-	//			record.CreatedAt = time.Now()
-	//			record.UpdatedAt = time.Now()
-	//			record.Unit = payload.Unit
-	//			record.Value = payload.Value
-	//			record.UpdatedBy = payload.UpdatedBy
-	//			if result := DB.Create(&record); result.Error != nil {
-	//				fmt.Println(result.Error)
-	//			}
-	//		}
-	//	}(pc)
-	//}
 }
 
 // test only
