@@ -5,6 +5,7 @@ import (
 	"crypto/sha512"
 	"fmt"
 	"github.com/IBM/sarama"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/robfig/cron/v3"
 	"github.com/xdg/scram"
@@ -14,13 +15,6 @@ import (
 	"log"
 	"time"
 )
-
-func disableCORS(c *gin.Context) {
-	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")  // You can set specific origins here (e.g., "http://localhost:3000")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "*") // Allow all methods
-	c.Writer.Header().Set("Access-Control-Allow-Headers", "*") // Allow all headers
-	c.Next()
-}
 
 func main() {
 
@@ -46,7 +40,7 @@ func main() {
 
 	h := controller.New(DB, kh)
 	router := gin.Default()
-	router.Use(disableCORS)
+	router.Use(cors.Default())
 	api := router.Group("")
 	{
 		api.GET("/temperature", h.GetTemperatureRecords)
