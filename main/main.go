@@ -5,7 +5,7 @@ import (
 	"crypto/sha512"
 	"fmt"
 	"fsb-mse-iad591-server/datasource"
-	"fsb-mse-iad591-server/datasource/models"
+	models2 "fsb-mse-iad591-server/datasource/models"
 	controller "fsb-mse-iad591-server/handler"
 	"github.com/IBM/sarama"
 	"github.com/gin-gonic/gin"
@@ -17,7 +17,7 @@ import (
 
 func main() {
 	DB := datasource.Init()
-	err := DB.AutoMigrate(&models.TemperatureRecord{}, &models.HumidityRecord{}, &models.WaterPumpsHistory{})
+	err := DB.AutoMigrate(&models2.TemperatureRecord{}, &models2.Configuration{}, &models2.HumidityRecord{}, &models2.WaterPumpsHistory{})
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -33,8 +33,12 @@ func main() {
 		api.GET("/humidity", h.GetHumidityRecords)
 		api.POST("/humidity", h.UpdateHumidityRecords)
 		api.POST("/temperature", h.UpdateTemperatureRecords)
+		api.GET("/waterpumping", h.GetWaterPumpsHistories)
+		api.POST("/waterpumping", h.UpdateWaterPumpsHistories)
+		api.GET("/configuration", h.GetConfiguration)
+		api.POST("/configuration", h.UpdateConfiguration)
 	}
-	err = router.Run(":8080")
+	err = router.Run(":6666")
 	if err != nil {
 		return
 	}

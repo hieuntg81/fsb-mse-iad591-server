@@ -11,10 +11,11 @@ func (WaterPumpsHistory) TableName() string {
 
 type WaterPumpsHistory struct {
 	gorm.Model
-	ID        uint `gorm:"primaryKey;autoIncrement:false;column:id"`
-	OpenTime  uint `gorm:"column:open_time"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	UpdatedBy string
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID              uint    `gorm:"primaryKey;autoIncrement:true;column:id"`
+	OpenTime        uint    `gorm:"column:open_time"`
+	CurrentHumidity float64 `gorm:"column:current_humidity"`
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+	UpdatedBy       string
+	DeletedAt       gorm.DeletedAt `gorm:"index"`
 }

@@ -25,3 +25,9 @@ type Payload struct {
 	Unit      string  `json:"unit"`
 	UpdatedBy string  `json:"updated_by"`
 }
+
+type PumpPayload struct {
+	CurrentHumidity float64 `json:"current_humidity"`
+	OpenTime        uint    `json:"open_time"`
+	UpdatedBy       string  `json:"updated_by"`
+}
