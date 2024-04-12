@@ -15,7 +15,15 @@ import (
 	"time"
 )
 
+func disableCORS(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")  // You can set specific origins here (e.g., "http://localhost:3000")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "*") // Allow all methods
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "*") // Allow all headers
+	c.Next()
+}
+
 func main() {
+
 	DB := datasource.Init()
 	err := DB.AutoMigrate(&models.TemperatureRecord{}, &models.Configuration{}, &models.HumidityRecord{}, &models.WaterPumpsHistory{})
 	if err != nil {
@@ -39,6 +47,7 @@ func main() {
 	go kh.UpdateHumidity(DB)
 
 	router := gin.Default()
+	router.Use(disableCORS)
 	api := router.Group("")
 	{
 		api.GET("/temperature", h.GetTemperatureRecords)
