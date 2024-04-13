@@ -90,10 +90,6 @@ func InitKafkaConsumer() sarama.ConsumerGroup {
 	config.Consumer.Offsets.AutoCommit.Interval = 1 * time.Second
 
 	brokers := []string{"cluster001.kas.bfcplatform.vn:9094"}
-	//consumer, err := sarama.NewConsumer(brokers, config)
-	//if err != nil {
-	//	log.Fatalln("Error creating consumer", err)
-	//}
 	consumerGroup, err := sarama.NewConsumerGroup(brokers, "bizfly-7-678-group-1", config)
 	if err != nil {
 		log.Panicf("Error creating consumerGroup group client: %v", err)
